@@ -1,5 +1,5 @@
 """
-SQLite store (Phase 1).
+PostgreSQL store (Phase 1).
 
 Purpose:
 - Minimal persistence for MVP:
@@ -12,4 +12,3 @@ Planned implementation:
 - Create tables for raw messages, categorization results, and exports.
 - Enforce idempotency via primary keys/unique constraints.
 """
-

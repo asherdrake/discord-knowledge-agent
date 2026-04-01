@@ -8,6 +8,6 @@ Purpose:
   - export ledger (idempotency + audit)
 
 Phase 1:
-- SQLite-backed store.
+- PostgreSQL-backed store.
 """
 

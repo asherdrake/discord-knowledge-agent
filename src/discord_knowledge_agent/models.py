@@ -13,7 +13,8 @@ Planned implementation:
 """
 
 from pydantic import BaseModel, Field
-from datetime import datetime
+from datetime import datetime, timezone
+from typing import Optional
 
 class RawDiscordMessage(BaseModel):
   message_id: str
@@ -32,3 +33,12 @@ class CategoryAssignment(BaseModel):
     default_factory=lambda: datetime.now(timezone.utc)
   )
   method: str = "heuristic_v1"
+
+class ExportLedgerRecord(BaseModel):
+  ledger_id: str
+  category: str
+  target_system: str
+  target_document_id: str
+  content_hash: str
+  status: str
+  exported_at: datetime
