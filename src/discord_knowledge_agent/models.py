@@ -16,29 +16,30 @@ from pydantic import BaseModel, Field
 from datetime import datetime, timezone
 from typing import Optional
 
+
 class RawDiscordMessage(BaseModel):
-  message_id: str
-  channel_id: str
-  author_id: str
-  content: str
-  created_at: datetime
-  reply_to_id: Optional[str] = None
+    message_id: str
+    channel_id: str
+    author_id: str
+    content: str
+    created_at: datetime
+    reply_to_id: Optional[str] = None
+
 
 class CategoryAssignment(BaseModel):
-  message_id: str = Field(min_length=1)
-  category: str = Field(min_length=1)
-  confidence: float = Field(ge=0.0, le=1.0)
-  rationale: str | None = None
-  assigned_at: datetime = Field(
-    default_factory=lambda: datetime.now(timezone.utc)
-  )
-  method: str = "heuristic_v1"
+    message_id: str = Field(min_length=1)
+    category: str = Field(min_length=1)
+    confidence: float = Field(ge=0.0, le=1.0)
+    rationale: str | None = None
+    assigned_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    method: str = "heuristic_v1"
+
 
 class ExportLedgerRecord(BaseModel):
-  ledger_id: str
-  category: str
-  target_system: str
-  target_document_id: str
-  content_hash: str
-  status: str
-  exported_at: datetime
+    ledger_id: str
+    category: str
+    target_system: str
+    target_document_id: str
+    content_hash: str
+    status: str
+    exported_at: datetime

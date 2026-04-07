@@ -14,4 +14,5 @@ requires-python = ">=3.13"
 dependencies = [
     "psycopg[binary]>=3.3.3",
     "pydantic>=2.12.5",
+    "pydantic-settings>=2.13.1",
 ]
