@@ -1,3 +1,10 @@
+[build-system]
+requires = ["hatchling>=1.24"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/discord_knowledge_agent"]
+
 [project]
 name = "discord-knowledge-agent"
 version = "0.1.0"
