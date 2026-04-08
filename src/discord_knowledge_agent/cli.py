@@ -12,3 +12,28 @@ Planned implementation:
 - Delegate real work to `pipelines/` modules.
 """
 
+import typer
+import psycopg
+from discord_knowledge_agent.pipelines.ingest import run_ingest
+
+app = typer.Typer()
+
+
+@app.command()
+def ingest(export_path: str) -> None:
+    """
+    Parse Discrub export JSON and upsert messages.
+    """
+    try:
+        count = run_ingest(export_path)
+        typer.echo(f"Ingested {count} messages.")
+    except psycopg.OperationalError:
+        typer.echo(
+            "Could not connect to PostgreSQL. Is Docker running and db container up?",
+            err=True,
+        )
+        raise typer.Exit(code=1)
+
+
+if __name__ == "__main__":
+    app()

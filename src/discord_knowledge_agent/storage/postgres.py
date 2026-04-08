@@ -23,7 +23,7 @@ from discord_knowledge_agent.models import (
 
 
 def upsert_raw_message(msg: RawDiscordMessage) -> None:
-    with psycopg.connect(settings.database_url) as conn:
+    with psycopg.connect(settings.database_url, connect_timeout=3) as conn:
         with conn.cursor() as cur:
             cur.execute(
                 """
@@ -55,7 +55,7 @@ def upsert_raw_message(msg: RawDiscordMessage) -> None:
 
 
 def list_raw_messages(limit: int | None = None) -> list[RawDiscordMessage]:
-    with psycopg.connect(settings.database_url) as conn:
+    with psycopg.connect(settings.database_url, connect_timeout=3) as conn:
         with conn.cursor() as cur:
             if limit is None:
                 cur.execute("""
@@ -89,7 +89,7 @@ def list_raw_messages(limit: int | None = None) -> list[RawDiscordMessage]:
 
 
 def list_uncategorized_messages(limit: int | None = None) -> list[RawDiscordMessage]:
-    with psycopg.connect(settings.database_url) as conn:
+    with psycopg.connect(settings.database_url, connect_timeout=3) as conn:
         with conn.cursor() as cur:
             if limit is None:
                 cur.execute("""
@@ -129,7 +129,7 @@ def list_uncategorized_messages(limit: int | None = None) -> list[RawDiscordMess
 def list_messages_with_assignments(
     limit: int | None = None,
 ) -> list[tuple[RawDiscordMessage, CategoryAssignment]]:
-    with psycopg.connect(settings.database_url) as conn:
+    with psycopg.connect(settings.database_url, connect_timeout=3) as conn:
         with conn.cursor() as cur:
             if limit is None:
                 cur.execute("""
@@ -175,7 +175,7 @@ def list_messages_with_assignments(
 
 
 def upsert_category_assignment(assignment: CategoryAssignment) -> None:
-    with psycopg.connect(settings.database_url) as conn:
+    with psycopg.connect(settings.database_url, connect_timeout=3) as conn:
         with conn.cursor() as cur:
             cur.execute(
                 """
@@ -207,7 +207,7 @@ def upsert_category_assignment(assignment: CategoryAssignment) -> None:
 
 
 def list_category_assignments(limit: int | None = None) -> list[CategoryAssignment]:
-    with psycopg.connect(settings.database_url) as conn:
+    with psycopg.connect(settings.database_url, connect_timeout=3) as conn:
         with conn.cursor() as cur:
             if limit is None:
                 cur.execute("""
@@ -241,7 +241,7 @@ def list_category_assignments(limit: int | None = None) -> list[CategoryAssignme
 
 
 def insert_export_ledger_record(record: ExportLedgerRecord) -> None:
-    with psycopg.connect(settings.database_url) as conn:
+    with psycopg.connect(settings.database_url, connect_timeout=3) as conn:
         with conn.cursor() as cur:
             cur.execute(
                 """
@@ -269,7 +269,7 @@ def insert_export_ledger_record(record: ExportLedgerRecord) -> None:
 
 
 def list_export_ledger_records(limit: int | None = None) -> list[ExportLedgerRecord]:
-    with psycopg.connect(settings.database_url) as conn:
+    with psycopg.connect(settings.database_url, connect_timeout=3) as conn:
         with conn.cursor() as cur:
             if limit is None:
                 cur.execute("""
@@ -305,7 +305,7 @@ def list_export_ledger_records(limit: int | None = None) -> list[ExportLedgerRec
 
 
 def get_latest_export_ledger_record() -> ExportLedgerRecord | None:
-    with psycopg.connect(settings.database_url) as conn:
+    with psycopg.connect(settings.database_url, connect_timeout=3) as conn:
         with conn.cursor() as cur:
             cur.execute("""
         SELECT ledger_id, category, target_system, target_document_id, content_hash, status, exported_at
