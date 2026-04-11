@@ -12,9 +12,10 @@ Planned implementation:
 - Keep models stable and extensible (support `extra` metadata).
 """
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
 from datetime import datetime, timezone
 from typing import Optional
+from discord_knowledge_agent.organize.category_labels import CATEGORY_SET
 
 
 class RawDiscordMessage(BaseModel):
@@ -34,6 +35,13 @@ class CategoryAssignment(BaseModel):
     assigned_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     method: str = "heuristic_v1"
 
+    @field_validator("category")
+    @classmethod
+    def validate_category(cls, c: str) -> str:
+        c = c.strip().lower()
+        if c not in CATEGORY_SET:
+            raise ValueError(f"Unknown category: {c!r}; allowed={sorted(CATEGORY_SET)}")
+        return c
 
 class ExportLedgerRecord(BaseModel):
     ledger_id: str
@@ -43,3 +51,4 @@ class ExportLedgerRecord(BaseModel):
     content_hash: str
     status: str
     exported_at: datetime
+

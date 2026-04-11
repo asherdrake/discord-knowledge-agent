@@ -188,8 +188,7 @@ def upsert_category_assignment(assignment: CategoryAssignment) -> None:
           method
         )
         VALUES (%s, %s, %s, %s, %s, %s)
-        ON CONFLICT (message_id) DO UPDATE SET
-          category = EXCLUDED.category,
+        ON CONFLICT (message_id, category) DO UPDATE SET
           confidence = EXCLUDED.confidence,
           rationale = EXCLUDED.rationale,
           assigned_at = EXCLUDED.assigned_at,

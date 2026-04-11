@@ -9,12 +9,13 @@ CREATE TABLE IF NOT EXISTS raw_discord_messages (
 );
 
 CREATE TABLE IF NOT EXISTS category_assignments (
-    message_id      TEXT PRIMARY KEY REFERENCES raw_discord_messages (message_id) ON DELETE CASCADE,
+    message_id      TEXT NOT NULL REFERENCES raw_discord_messages (message_id) ON DELETE CASCADE,
     category        TEXT NOT NULL,
     confidence      DOUBLE PRECISION NOT NULL,
     rationale       TEXT,
     assigned_at     TIMESTAMPTZ NOT NULL,
-    method          TEXT NOT NULL DEFAULT 'heuristic_v1'
+    method          TEXT NOT NULL DEFAULT 'heuristic_v1',
+    PRIMARY KEY (message_id, category) 
 );
 
 CREATE TABLE IF NOT EXISTS export_ledger_records (
