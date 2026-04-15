@@ -50,5 +50,5 @@ class ExportLedgerRecord(BaseModel):
     target_document_id: str
     content_hash: str
     status: str
-    exported_at: datetime
+    exported_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 

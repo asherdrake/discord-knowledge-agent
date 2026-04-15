@@ -12,10 +12,12 @@ Planned implementation:
 - Delegate real work to `pipelines/` modules.
 """
 
+from discord_knowledge_agent.export.local_md import CategoryExportResult
 import typer
 import psycopg
 from discord_knowledge_agent.pipelines.ingest import run_ingest
 from discord_knowledge_agent.pipelines.organize import run_organize
+from discord_knowledge_agent.pipelines.export import run_export
 
 app = typer.Typer()
 
@@ -50,6 +52,21 @@ def organize(limit: int | None = None) -> None:
         )
         raise typer.Exit(code=1)
 
+@app.command()
+def export(out_dir: str) -> None:
+    """
+    Export messages to the given output directory in markdown form.
+    """
+    try:
+        export_results: dict[str, CategoryExportResult] = run_export(out_dir)
+        for cat, result in export_results.items():
+            typer.echo(f"Category: {cat}, Exported {result.message_count} messages to {result.output_path}\n")
+    except psycopg.OperationalError:
+        typer.echo(
+            "Could not connect to PostgreSQL. Is Docker running and db container up?",
+            err=True,
+        )
+        raise typer.Exit(code=1)
 
 if __name__ == "__main__":
     app()
